@@ -5186,14 +5186,12 @@ async function 生成随机IP(request, count = 16, 指定端口 = -1) {
 		const mask = (0xFFFFFFFF << hostBits) >>> 0, randomIP = (((ipInt & mask) >>> 0) + randomOffset) >>> 0;
 		return [(randomIP >>> 24) & 0xFF, (randomIP >>> 16) & 0xFF, (randomIP >>> 8) & 0xFF, randomIP & 0xFF].join('.');
 	};
-	const 动态国家机房 = `${request.cf.country || 'CF'}-${request.cf.colo || 'Colo'}`;
 	const randomIPs = Array.from({ length: count }, (_, index) => {
 		const ip = generateRandomIPFromCIDR(cidrList[Math.floor(Math.random() * cidrList.length)]);
 		const 目标端口 = 指定端口 === -1
 			? cfport[Math.floor(Math.random() * cfport.length)]
 			: 指定端口;
-		return `${ip}:${目标端口}#${动态国家机房}-${index + 1}`;
-		// return `${ip}:${目标端口}#${cfname}${index + 1}`;
+		return `${ip}:${目标端口}#${cfname}${index + 1}`;
 	});
 	return [randomIPs, randomIPs.join('\n')];
 }
